@@ -1,0 +1,26 @@
+{
+  "version": "0.0.0",
+  "description": "SoloPX - BUILD",
+  "main": "index.html",
+  "author": {
+    "name": "Razvan Nicu",
+    "email": "me@solopx.com",
+    "url": "http://solopx.com/"
+  },
+  "bugs": {
+    "url": "https://github.com/cromozooom/solopx-Build",
+    "email": "me@solopx.com"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-autoprefixer": "^3.0.4",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-jade": "^1.0.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}
