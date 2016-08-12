@@ -1,24 +1,45 @@
 module.exports = function(grunt) {
 	// configure the tasks
 	grunt.initConfig({
+	// project: {
+	// 	app: ['./app'],
+	// 	build: ['./build'],
+	// 	css: ['<%= project.app %>/styles'],
+	// 	js: ['<%= project.app %>/js'],
+	// 	components: ['<%= project.app %>/components'],
+	// 	templates: ['<%= project.app %>/templates']
+    // },
+	//copy: {
+	//	build: {
+	//		expand: true
+	//		cwd: 'app/',
+	//		//src: [ 'app/**' ],
+	//		//src: [ '**' ],
+	//		src: [ 'app/*' , '!**/*.sass', '!**/*.coffee', '!**/*.jade' ],
+	//		dest: 'build',
+	//	},
+	//},
 	copy: {
-		build: {
-			cwd: 'source',
-			//src: [ '**/app' ],
-			src: [ '**', '!**/*.styl', '!**/*.coffee', '!**/*.jade' ],
-			dest: 'build',
-			expand: true
-		},
-	},
+            main: {
+                files: [{
+                    expand: true,
+                    cwd: 'app/',
+                    src: ['**', '!**/sass', '!**/*.coffee', '!**/*.jade'],
+                    dest: 'build/'
+                }]
+            }
+        },
 	clean: {
 		build: {
-			src: [ 'build' ]
+			src: ['build/**']
 		},
 		stylesheets: {
-			src: [ 'build/**/*.css', '!build/styles/app.css' ]
+			// src: [ 'build/**/*.css', '!build/styles/app.css' ]
+			src: [ 'build/**/*.css' ]
 		},
 		scripts: {
-			src: [ 'build/**/*.js', '!build/js/js.js' ]
+			// src: [ 'build/**/*.js', '!build/js/js.js' ]
+			src: [ 'build/**/*.js' ]
 		},
 	},
 
@@ -75,18 +96,6 @@ module.exports = function(grunt) {
 			}
 		}
 	},
-	// jade: {
-	// 	compile: {
-	// 		options: {
-	// 			data: {}
-	// 		},
-	// 		files: [{
-	// 			//cwd: 'source',
-	// 			'app' : [ '**/*.jade' ]
-	// 			//ext: '.html'
-	// 		}]
-	// 	}
-	// },
 	jade: {
 		compile: {
 			options: {
@@ -100,7 +109,33 @@ module.exports = function(grunt) {
 				'app/index.html': ['app/view/template.jade']
 			}
 		}
-	}
+	},
+	express:{
+		all:{
+			options:{
+				port:3000,
+				hostname:'localhost',
+				bases:['app'],
+				livereload: true
+			}
+		}
+	},
+	browserSync: {
+		dev: {
+			bsFiles: {
+				src : [
+				'<%= project.app %>/**/style.css',
+				'<%= project.app %>/**/*.js',
+				'<%= project.app %>/content/**/*',
+				'<%= project.app %>/**/*.html'
+				]
+			},
+			options: {
+				watchTask: true,
+				server: '<%= project.app %>/'
+			}
+		}
+    }
 });
 
 // load the tasks
@@ -112,6 +147,9 @@ grunt.loadNpmTasks('grunt-autoprefixer');
 grunt.loadNpmTasks('grunt-contrib-cssmin');
 grunt.loadNpmTasks('grunt-contrib-uglify');
 grunt.loadNpmTasks('grunt-contrib-jade');
+grunt.loadNpmTasks('grunt-express');
+grunt.loadNpmTasks('grunt-browser-sync');
+
 
 grunt.registerTask(
 	'stylesheets',
@@ -144,23 +182,38 @@ grunt.registerTask(
 grunt.registerTask(
 	'build',
 	'Compiles all of the assets and copies the files to the build directory.',
-		[
-			'clean:build'
-			,'stylesheets'
-			,'scripts'
-			,'copy'
-			,'jade'
-		]
-	);
+	[
+		'clean:build'
+		,'stylesheets'
+		,'scripts'
+		,'copy'
+		,'jade'
+	]
+);
 
 grunt.registerTask(
 	'dev',
+	[
+		'express'
+		,'scripts'
+		,'stylesheets'
+		,'autoprefixer'
+		,'jade'
+		,'browserSync'
+		,'watch'
+	]
+);
+
+grunt.registerTask(
+	'default',
+	'Watches the project for changes, automatically builds them and runs a server.',
 		[
-			'scripts'
-			,'stylesheets'
-			,'autoprefixer'
-			,'jade'
-			,'watch'
+			//'clean:build'
+			'copy'
+			//,'stylesheets'
+			//,'express'
+			//,'browserSync'
+			//,'watch'
 		]
 	);
 };

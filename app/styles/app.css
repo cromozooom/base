@@ -7,6 +7,6 @@ body {
   display: -ms-flexbox;
   display: flex;
   width: calc(50% - 2em);
-  border: 1px solid red;
+  border: 1px solid blued;
   border-radius: 12px;
 }
